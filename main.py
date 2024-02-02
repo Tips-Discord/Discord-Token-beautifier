@@ -10,7 +10,8 @@ except ModuleNotFoundError:
     i = 0
     imports = [
         "tls_client",
-        "requests"
+        "requests",
+        "typing_extensions"
     ]
     for _import in imports:
         i += 1
@@ -75,7 +76,208 @@ with open("config.json") as f:
 with open("data/tokens.txt", "r") as f:
     tokens = f.read().splitlines()
 
-
+pron = [
+    'They/them', 
+    'She/her', 
+    'He/him', 
+    'Ze/hir', 
+    'Ey/em', 
+    'Xe/xem', 
+    'Ve/ver', 
+    'Per/pers', 
+    'Ne/nem', 
+    'Fae/faer', 
+    'E/em', 
+    'Co/cos', 
+    'Mx/mx', 
+    'Thon/thons', 
+    'Spivak/spivak', 
+    'Ze/hirs', 
+    'Zie/hir', 
+    'Sie/hir', 
+    'He/she/they', 
+    'He/they', 
+    'She/they', 
+    'They/she', 
+    'They/he', 
+    'He/she', 
+    'He/xe', 
+    'She/xe', 
+    'They/xe',
+    'Eir/eirs', 
+    'Xe/xyr', 
+    'Zie/zir', 
+    'Ze/zir', 
+    'Ey/eirs', 
+    'Co/coself', 
+    'Mx/mxself', 
+    'Thon/thonself', 
+    'Ve/verself', 
+    'Ne/nemself', 
+    'Fae/faerself', 
+    'E/emself', 
+    'Kit/kitself', 
+    'Vae/vaerself', 
+    'Xem/xemself', 
+    'Spivak/spivakself', 
+    'He/it', 
+    'She/it', 
+    'They/it', 
+    'It/it', 
+    'It/its', 
+    'Itself/itself', 
+    'One/oneself', 
+    'One/one', 
+    'Jhe/jhes', 
+    'Jhe/jhem', 
+    'Jhe/jhemself', 
+    'Yo/yo', 
+    'Yo/yos', 
+    'Yo/yoself', 
+    "Yo/yoself's", 
+    'Jhi/jhim', 
+    'Jhi/jhimself', 
+    'Ve/vir', 
+    'Ve/virs', 
+    'Ve/virself', 
+    'Fey/fem', 
+    'Fey/femself', 
+    'Tey/ter', 
+    'Tey/terself', 
+    'Fey/feyr', 
+    'Fey/feyrs', 
+    'Fey/feyrself', 
+    'Fey/feyrs', 
+    'Fey/feyrself', 
+    "Fey/feyrself's", 
+    'Zie/zies', 
+    "Zie/zie's", 
+    'Zie/zieself', 
+    "Mx/mx's", 
+    "Mx/mxself's", 
+    'Tey/tem', 
+    'Tey/temself', 
+    "Tey/tem's", 
+    "Tey/temself's", 
+    'Tey/ters', 
+    'Tey/terself', 
+    "Tey/ters'", 
+    "Tey/terself's", 
+    "Co/cos'", 
+    "Co/coself's", 
+    "Co/co's", 
+    "Co/coself's", 
+    'Co/coselves', 
+    "Mx/mx's", 
+    "Mx/mx's", 
+    "Mx/mxself's", 
+    "Mx/mx's", 
+    "Spivak/spivak's", 
+    "Spivak/spivakself's", 
+    'Spivak/spivaks', 
+    "Spivak/spivakself's", 
+    "E/em's", 
+    "E/emself's", 
+    "E/em's", 
+    "E/emself's", 
+    "Ve/ver's", 
+    "Ve/verself's", 
+    "Ne/nem's", 
+    "Ne/nemself's",
+    "Ne/nem's", 
+    "Ne/nemself's", 
+    "Fae/faer's", 
+    "Fae/faerself's", 
+    'Fae/faes', 
+    "Fae/faeself's", 
+    "Xe/xem's", 
+    "Xe/xemself's", 
+    "Ze/zer's", 
+    "Ze/zerself's", 
+    "Ze/ze's", 
+    "Ze/zerself's", 
+    'Ze/zes', 
+    "Ze/zeself's", 
+    "Xe/xyr's", 
+    "Xe/xyrself's", 
+    "Xe/xir's", 
+    "Xe/xirself's", 
+    'Xe/xis', 
+    "Xe/xiself's", 
+    "Zie/zir's", 
+    "Zie/zirself's", 
+    "Zie/zieself's", 
+    'Zie/zies', 
+    "Zie/zieself's", 
+    "Ey/eir's", 
+    "Ey/eirself's", 
+    'Ey/eirs', 
+    "Ey/eirs's", 
+    'Ey/eirs', 
+    "Ey/eirs's", 
+    'They/them/theirs', 
+    'They/themself', 
+    'They/them/theirself', 
+    "They/them/their's", 
+    'They/themselves', 
+    "They/them's", 
+    "They/themself's", 
+    "They/them/their's", 
+    "They/themselves's", 
+    'She/her/hers', 
+    'She/herself', 
+    "She/her/herself's", 
+    "She/herself's", 
+    "She/her's", 
+    "She/herself's", 
+    'She/hers', 
+    "She/herself's", 
+    "She/her/herself's", 
+    'He/him/his', 
+    'He/himself', 
+    'He/him/hisself', 
+    'He/his', 
+    "He/himself's", 
+    "He/himself's", 
+    "He/him's",
+    "He/himself's", 
+    "He/him/hisself's", 
+    'She/they/their', 
+    'She/they/theirself', 
+    "She/they/their's", 
+    'She/they/themself', 
+    "She/they/themself's", 
+    "She/they/them's", 
+    'She/they/themselves', 
+    "She/they/themself's", 
+    "She/they/themself's", 
+    'They/she/her', 
+    'They/she/hers', 
+    'They/she/herself', 
+    "They/she/herself's", 
+    'They/she/his', 
+    'They/she/hisself', 
+    "They/she/hisself's", 
+    "They/she/hisself's", 
+    "They/she/hisself's", 
+    "They/she/himself's", 
+    "They/she/himself's", 
+    "They/she/hisself's", 
+    'He/she/they', 
+    'He/she/them', 
+    'He/she/themself', 
+    "He/she/themself's", 
+    'He/she/their', 
+    'He/she/theirself', 
+    "He/she/theirself's", 
+    "He/she/theirself's", 
+    "He/she/themself's", 
+    "He/she/themself's", 
+    "He/she/themself's", 
+    "He/she/themself's", 
+    "He/she/themself's", 
+    "He/she/themself's"
+]
 
 proxy = Config["Proxies"]
 
@@ -139,7 +341,7 @@ class Changer:
         content = response.json().get("content")
         author = response.json().get("author")
 
-        bio = f"{content} - {author}"
+        bio = f"'{content}' - {author}"
 
         return bio
 
@@ -149,13 +351,13 @@ class Changer:
             'house_id': random.randint(1, 4),
         }
 
-        respone = session.post("https://discord.com/api/v9/hypesquad/online", headers=headers, json=data)
+        response = session.post("https://discord.com/api/v9/hypesquad/online", headers=headers, json=data)
 
-        match respone.status_code:
+        match response.status_code:
             case 204:
                 print(f"added HypeSquad {token[:20]}")
             case _:
-                print(f"failed adding HypeSquad {token[:20]}")
+                print(f"failed adding HypeSquad {token[:20]} {response.json()}")
 
     def Add_Avatar(self, token):
         headers = self.Headers(token)
@@ -167,12 +369,12 @@ class Changer:
 
         payload = {'avatar': f"data:image/png;base64,{(encoded_string.decode('utf-8'))}"}
 
-        response = session.patch("https://discord.com/api/v9/users/@me", headers=headers)
+        response = session.patch("https://discord.com/api/v9/users/@me", headers=headers, json=payload)
         match response.status_code:
             case 200:
                 print(f"Added pfp {token[:20]}")
             case _:
-                print(f"Failed adding pfp {token[:20]}")
+                print(f"Failed adding pfp {token[:20]} {response.json()}")
 
     def Add_Bio(self, token):
         headers = self.Headers(token)
@@ -187,7 +389,22 @@ class Changer:
             case 200:
                 print(f"Added Bio {token[:20]}")
             case _:
-                print(f"Failded adding bio {token[:20]}")
+                print(f"Failded adding bio {token[:20]} {response.json()}")
+
+    def Add_Pron(self, token):
+        headers = self.Headers(token)
+
+        payload = {
+            "pronouns": random.choice(pron)
+        }
+
+        response = session.patch(f'https://discord.com/api/v9/users/%40me/profile', headers=headers, json=payload)
+        
+        match response.status_code:
+            case 200:
+                print(f"Added pron {token[:20]}")
+            case _:
+                print(f"Failed adding pron {token[:20]} {response.json()}")
 
     def Main(self):
         with open("data/tokens.txt", "r") as f:
@@ -202,6 +419,7 @@ class Changer:
             self.Add_Avatar(token)
             self.Add_HypeSquad(token)
             self.Add_Bio(token)
+            self.Add_Pron(token)
 
         input("done")
 
